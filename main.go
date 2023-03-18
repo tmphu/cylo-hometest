@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	controllers "github.com/tmphu/ecom/controllers"
 	"github.com/tmphu/ecom/initializers"
@@ -14,6 +15,10 @@ func init() {
 
 func main() {
 	r := gin.Default()
+
+	// use default for test convenience
+	r.Use(cors.Default())
+
 	r.Use(middlewares.RequestLogger())
 
 	r.GET("/api/products/get", controllers.GetProducts)
