@@ -11,6 +11,11 @@ Why MVC?
 
 - Overall, it's a good pattern for small to medium size project. I read many articles, there are other patterns for complex projects like Repository pattern, Dependency Injection, microservices, etc. But I find myself familiar the most with MVC pattern, so I apply it for this assignment.
 
+Unit Test
+
+- I only cover test for 2 functions in ProductService: CreateProduct and GetProductById using Testify. Usually, there are 2 approaches to test API: (1) Connect test DB and run the test against real DB, (2) Mock the web server and DB. I choose first approach for this assignment.
+- Go built-in test framework is good enough, but I find Testify make writing test more concise (without if-else statements to compare expected & actual values)
+
 ##3. Folder structure
 
 `/ecom`
