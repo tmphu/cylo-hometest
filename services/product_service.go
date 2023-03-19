@@ -6,6 +6,7 @@ import (
 
 	"github.com/tmphu/ecom/initializers"
 	"github.com/tmphu/ecom/models"
+	"gorm.io/gorm"
 )
 
 type ProductQueryParams struct {
@@ -29,7 +30,7 @@ type Data struct {
 type ProductService struct{}
 
 func (p *ProductService) GetProducts(params *ProductQueryParams) ([]models.Product, error) {
-	var products []models.Product
+	products := []models.Product{}
 	query := initializers.DB
 
 	// search by name
@@ -62,15 +63,18 @@ func (p *ProductService) GetProducts(params *ProductQueryParams) ([]models.Produ
 	return products, nil
 }
 
-func (p *ProductService) GetSingleProduct(id string) (models.Product, error) {
-	var product models.Product
+func (p *ProductService) GetSingleProduct(id string) (models.Product, bool, error) {
+	product := models.Product{}
 	result := initializers.DB.First(&product, id)
 
-	if result.Error != nil {
-		return product, result.Error
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		return product, false, result.Error
 	}
 
-	return product, nil
+	if result.Error == gorm.ErrRecordNotFound {
+		return product, false, nil
+	}
+	return product, true, nil
 }
 
 func (p *ProductService) CreateProduct(data *Data) (models.Product, error) {

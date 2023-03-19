@@ -1,14 +1,13 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
-	"github.com/tmphu/ecom/models"
 	"github.com/tmphu/ecom/services"
 )
 
 func GetProducts(c *gin.Context) {
-	var products []models.Product
-
 	search := c.Query("search")
 	filterGender := c.Query("gender")
 	filterCategory := c.Query("category")
@@ -27,54 +26,71 @@ func GetProducts(c *gin.Context) {
 	products, err := productService.GetProducts(&params)
 
 	if err != nil {
-		c.JSON(500, gin.H{
-			"message": "Internal server error",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"statusCode": http.StatusInternalServerError,
+			"message":    "Internal server error",
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data": products,
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": http.StatusOK,
+		"message":    "Success",
+		"data":       products,
 	})
 }
 
 func GetSingleProduct(c *gin.Context) {
-	var product models.Product
 	id := c.Query("id")
 
 	// call service
 	productService := &services.ProductService{}
-	product, err := productService.GetSingleProduct(id)
+	product, isExist, err := productService.GetSingleProduct(id)
 
 	if err != nil {
-		c.JSON(500, gin.H{
-			"message": "Internal server error",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"statusCode": http.StatusInternalServerError,
+			"message":    "Internal server error",
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data": product,
+	if !isExist {
+		c.JSON(http.StatusNotFound, gin.H{
+			"statusCode": http.StatusNotFound,
+			"message":    "Product not found",
+			"data":       nil,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": http.StatusOK,
+		"message":    "Success",
+		"data":       product,
 	})
 }
 
 func CreateProduct(c *gin.Context) {
 	// bind request's body to data struct
-	data := &services.Data{}
-	c.Bind(data)
+	data := services.Data{}
+	c.Bind(&data)
 
 	// call service
 	productService := &services.ProductService{}
-	product, err := productService.CreateProduct(data)
+	product, err := productService.CreateProduct(&data)
 
 	if err != nil {
-		c.JSON(500, gin.H{
-			"message": "Internal server error",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"statusCode": http.StatusInternalServerError,
+			"message":    "Internal server error",
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data": product,
+	c.JSON(http.StatusCreated, gin.H{
+		"statusCode": http.StatusCreated,
+		"message":    "Success",
+		"data":       product,
 	})
 }
