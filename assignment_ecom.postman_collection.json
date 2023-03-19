@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "74b1f783-4ad8-4831-a906-40884b5d2e7f",
+		"name": "assignment_ecom",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1159760"
+	},
+	"item": [
+		{
+			"name": "Create product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Male skinny jeans denim\",\r\n    \"Category\": \"Pants\",\r\n    \"Price\": 2100,\r\n    \"FeaturedImage\": \"https://salt.tikicdn.com/cache/750x750/ts/product/13/73/92/90b540d58e6497d780fa897acb649209.jpg.webp\",\r\n    \"Rating\": 4.7,\r\n    \"Gender\": \"Male\",\r\n    \"Brand\": \"Lados\",\r\n    \"Color\": \"Denim\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/products/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/products/get?gender=male&category=jacket&sort=price_desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"get"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "gray",
+							"disabled": true
+						},
+						{
+							"key": "gender",
+							"value": "male"
+						},
+						{
+							"key": "category",
+							"value": "jacket"
+						},
+						{
+							"key": "sort",
+							"value": "price_desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get product by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/products/getone?id=19",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"products",
+						"getone"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "19"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
